@@ -1,0 +1,90 @@
+-- DATABASE AND TABLES CREATE STARTED
+
+CREATE DATABASE HOSPITAL_MANAGEMENT_SYSTEM;
+USE HOSPITAL_MANAGEMENT_SYSTEM;
+
+-- Departments Table
+CREATE TABLE Departments (
+    DepartmentID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    Location VARCHAR(100) NOT NULL
+);
+
+-- Doctors Table
+CREATE TABLE Doctors (
+    DoctorID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    Specialization VARCHAR(100) NOT NULL,
+    Phone VARCHAR(15) NOT NULL,
+    DepartmentID INT,
+    FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID) ON DELETE SET NULL
+);
+
+-- Patients Table
+CREATE TABLE Patients (
+    PatientID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    Age INT NOT NULL,
+    Gender ENUM('Male', 'Female', 'Other') NOT NULL,
+    Phone VARCHAR(15) NOT NULL
+);
+
+-- Appointments Table
+CREATE TABLE Appointments (
+    AppointmentID INT PRIMARY KEY AUTO_INCREMENT,
+    DoctorID INT,
+    PatientID INT,
+    Date DATE DEFAULT (CURRENT_TIMESTAMP),
+    Time TIME DEFAULT (CURRENT_TIMESTAMP),
+    Status ENUM('Pending', 'Completed', 'Cancelled') NOT NULL DEFAULT 'Pending',
+    FOREIGN KEY (DoctorID) REFERENCES Doctors(DoctorID) ON DELETE CASCADE,
+    FOREIGN KEY (PatientID) REFERENCES Patients(PatientID) ON DELETE CASCADE
+);
+
+-- DATABASE AND TABLES CREATE END
+
+
+-- INSERTED DATA INTO TABLES STARTED
+
+USE HOSPITAL_MANAGEMENT_SYSTEM;
+
+INSERT INTO Departments (Name, Location) VALUES
+('Cardiology', 'Dhaka'),
+('Neurology', 'Chittagong'),
+('Orthopedics', 'Sylhet'),
+('Pediatrics', 'Khulna'),
+('General Surgery', 'Rajshahi');
+
+INSERT INTO Doctors (Name, Specialization, Phone, DepartmentID) VALUES
+('Dr. Anisur Rahman', 'Cardiologist', '01711000000', 1),
+('Dr. Nargis Sultana', 'Neurologist', '01712000000', 2),
+('Dr. Abdul Karim', 'Orthopedic Surgeon', '01713000000', 3),
+('Dr. Mahbub Alam', 'Pediatrician', '01714000000', 4),
+('Dr. Salma Akter', 'General Surgeon', '01715000000', 5);
+
+INSERT INTO Patients (Name, Age, Gender, Phone) VALUES
+('Md. Hasan Mahmud', 35, 'Male', '01811000000'),
+('Fatima Begum', 28, 'Female', '01812000000'),
+('Kamal Uddin', 45, 'Male', '01813000000'),
+('Shirin Akhter', 32, 'Female', '01814000000'),
+('Anisur Rahman', 50, 'Male', '01815000000');
+
+INSERT INTO Appointments (DoctorID, PatientID, Status) VALUES
+(1, 1, 'Pending'),
+(2, 2, 'Completed'),
+(3, 3, 'Cancelled'),
+(4, 4, 'Pending'),
+(5, 5, 'Completed');
+
+-- INSERTED DATA INTO TABLES END
+
+-- VIEW TABLE INFORMATION STARTED
+
+USE HOSPITAL_MANAGEMENT_SYSTEM;
+
+SELECT * FROM Departments;
+SELECT * FROM Doctors;
+SELECT * FROM Patients;
+SELECT * FROM Appointments;
+
+-- VIEW TABLE INFORMATION END
